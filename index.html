@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AbyssSplat: Active-Illumination-Aware Gaussian Splatting for Deep-Sea 3D Reconstruction</title>
+    <meta name="description" content="AbyssSplat paper. Official web with qualitative comparisons, links to the source code, and additional materials.">
+    <meta name="keywords" content="abysssplat,3dgs,deep-sea,gaussian splatting,underwater reconstruction">
+    <link href="./css2" rel="stylesheet">
+    <link href="./tabler-icons.min.css" rel="stylesheet">
+    
+    <style>
+      .video.teaser-video::before {
+        padding-bottom: 50%;
+      }
+      
+      /* 新增：从外部容器进行裁切，完美解决底部留白，且不破坏 JS 依赖 */
+      .video-wrapper {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        aspect-ratio: 1280 / 720; /* 强制 16:9 视窗 */
+        border-radius: 6px; /* 稍微加点圆角提升质感，如果不喜欢可以删掉 */
+      }
+      
+      /* 新增：让画布自适应外层容器 */
+      .video-wrapper canvas.video-compare {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* 新增：2x2 网格排版 */
+      .grid-2x2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5em;
+        margin-bottom: 2em;
+      }
+
+      /* 新增：移动端自动折叠为单列 */
+      @media (max-width: 768px) {
+        .grid-2x2 {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <span class="title-main"><span>AbyssSplat</span></span>
+        <span class="title-small">Active-Illumination-Aware Gaussian Splatting for Deep-Sea 3D Reconstruction</span>
+      </h1>
+    </header>
+
+    <div class="authors">
+      <div class="author">
+        <span class="author-name"><a href="#">Anonymous Author</a></span>
+        <span class="author-affiliation">Anonymous Institution</span>
+      </div>
+      <div class="author">
+        <span class="author-name"><a href="#">Anonymous Author</a></span>
+        <span class="author-affiliation">Anonymous Institution</span>
+      </div>
+      <div class="author">
+        <span class="author-name"><a href="#">Anonymous Author</a></span>
+        <span class="author-affiliation">Anonymous Institution</span>
+      </div>
+    </div>
+
+    <div class="links">
+      <a class="button" href="#"><i class="ti ti-file-type-pdf"></i> Paper(Comming Soon)</a>
+      <a class="button" href="#"><img style="height:80%;margin-right:0.2em;filter: brightness(0) saturate(100%) invert(100%)" src="./assets/arxiv.svg"> arXiv(Comming Soon)</a>
+      <a class="button" href="#"><i class="ti ti-brand-github-filled"></i> Code(Comming Soon)</a>
+    </div>
+    
+    <img src="./assets/diyiye.png" 
+      alt="Teaser Image" 
+      class="video" 
+      style="width: 100%; height: auto; display: block;">
+    <p class="justify" style="font-size: 1rem;margin: 0 0 0.4rem 0; text-align-last: center">
+      <strong>AbyssSplat</strong> reconstructs deep-sea scenes under active illumination, decoupling non-uniform lighting from scene-intrinsic radiance via Gaussian Splatting.
+    </p>
+
+    <section class="abstract">
+      <h2>Abstract</h2>
+      <p>
+We introduce AbyssSplat, the first 3D reconstruction framework specifically designed for complex deep-sea optical environments. 
+AbyssSplat incorporates two core innovations: a Hybrid Light Field Illumination Attenuation Model, 
+which explicitly models active light source scattering to achieve physical-domain decoupling between non-uniform illumination and scene-intrinsic radiance; 
+and a Medium-Guided Densification Modulation Mechanism, which integrates medium transmittance and Gaussian attributes to construct a geometric confidence, 
+applying adaptive gradient amplitude modulation to low-confidence regions to suppress overfitting of medium noise by Gaussian primitives. 
+Evaluations on the Eiffel Tower deep-sea and SeaThru-NeRF shallow-water datasets demonstrate that AbyssSplat achieves consistent state-of-the-art performance across all scenes, 
+with average PSNR improvements of 0.67 dB and 0.39 dB respectively over the best competing methods, alongside up to 49.5% LPIPS reduction—while 
+requiring fewer Gaussian primitives and less training time.
+      </p>
+    </section>
+
+    <section>
+      <h2>Method</h2>
+      <p class="justify">
+        AbyssSplat addresses the unique optical challenges of deep-sea environments through two complementary innovations.
+      </p>
+      <figure style="margin: 1em 0 0 0">
+        <div style="display: flex; gap: 1.2em;">
+          <div style="flex: 1; min-width: 0;">
+            <picture>
+              <img src="./assets/hunheguangchang.png"
+                   alt="Hybrid Light Field Illumination Attenuation Model"
+                   style="width: 100%; display: block;">
+            </picture>
+            <figcaption style="text-align: justify; margin-top: 0.4em;">
+              <strong>(a) Hybrid Light Field Illumination Attenuation Model.</strong>
+              Explicitly models active light source scattering to achieve physical-domain decoupling between non-uniform illumination and scene-intrinsic radiance.
+            </figcaption>
+          </div>
+          <div style="flex: 1; min-width: 0;">
+            <picture>
+              <img src="./assets/zhimihua.png"
+                   alt="Medium-Guided Densification Modulation Mechanism"
+                   style="width: 100%; display: block;">
+            </picture>
+            <figcaption style="text-align: justify; margin-top: 0.4em;">
+              <strong>(b) Medium-Guided Densification Modulation Mechanism.</strong>
+              Integrates medium transmittance and Gaussian attributes to construct geometric confidence, suppressing overfitting of medium noise by Gaussian primitives.
+            </figcaption>
+          </div>
+        </div>
+      </figure>
+    </section>
+
+    <section>
+      <h2>Results</h2>
+
+      <p style="font-size: 1rem; font-weight: 600; margin: 0 0 0.6em 0;">Method Comparison — Deep-Sea Scenes</p>
+
+      <figure style="margin-bottom: 2em;">
+        <div class="video-wrapper">
+          <video class="video-compare" style="aspect-ratio: 1280 / 720; position: absolute;" loop="" muted="" height="0">
+            <source src="./assets/ph_comp.webm" type="video/webm">
+            <source src="./assets/ph_comp.mp4" type="video/mp4">
+          </video>
+          <canvas width="720" height="406" class="video-compare" style="aspect-ratio: 720 / 406;"></canvas>
+          <span class="video-label video-label-with-fps">
+            <span style="clip-path: xywh(0px 0px 423px 100%);">baseline</span>
+            <span style="clip-path: inset(0px 0px 0px calc(100% - 423px));">AbyssSplat</span>
+          </span>
+        </div>
+        <figcaption style="margin-top: 0.5em;">
+          <strong>Comparison 1:</strong> AbyssSplat vs. Previous Method(WaterSplatting)
+        </figcaption>
+      </figure>
+
+      <!-- <figure style="margin-bottom: 2em;">
+        <div class="video-wrapper">
+          <video class="video-compare" style="aspect-ratio: 1280 / 720; position: absolute;" loop="" muted="" height="0">
+            <source src="./assets/curasao_comp.webm" type="video/webm">
+            <source src="./assets/curasao_comp.mp4" type="video/mp4">
+          </video>
+          <canvas width="720" height="406" class="video-compare" style="aspect-ratio: 720 / 406;"></canvas>
+          <span class="video-label video-label-with-fps">
+            <span style="clip-path: xywh(0px 0px 423px 100%);">baseline</span>
+            <span style="clip-path: inset(0px 0px 0px calc(100% - 423px));">AbyssSplat</span>
+          </span>
+        </div>
+        <figcaption style="margin-top: 0.5em;">
+          <strong>Comparison 2:</strong> AbyssSplat vs. Previous Method(WaterSplatting)
+        </figcaption>
+      </figure> -->
+
+      <p style="font-size: 1rem; font-weight: 600; margin: 1.2em 0 0.6em 0;">Scene Restorations</p>
+
+      <div class="grid-2x2">
+        
+        <figure style="margin: 0;">
+          <div class="video-wrapper">
+            <video class="video-compare" style="aspect-ratio: 1280 / 720; position: absolute;" loop="" muted="" height="0">
+              <source src="./assets/ps_place.webm" type="video/webm">
+              <source src="./assets/ps_place.mp4" type="video/mp4">
+            </video>
+            <canvas width="720" height="406" class="video-compare" style="aspect-ratio: 720 / 406;"></canvas>
+            <span class="video-label video-label-with-fps">
+              <span style="clip-path: xywh(0px 0px 423px 100%);">AbyssSplat</span>
+              <span style="clip-path: inset(0px 0px 0px calc(100% - 423px));">removed medium</span>
+            </span>
+          </div>
+          <figcaption style="margin-top: 0.5em;">
+            <strong>Eiffel Tower — </strong>Surrounding
+          </figcaption>
+        </figure>
+
+        <figure style="margin: 0;">
+          <div class="video-wrapper">
+            <video class="video-compare" style="aspect-ratio: 1280 / 720; position: absolute;" loop="" muted="" height="0">
+              <source src="./assets/v2_place.webm" type="video/webm">
+              <source src="./assets/v2_place.mp4" type="video/mp4">
+            </video>
+            <canvas width="720" height="406" class="video-compare" style="aspect-ratio: 720 / 406;"></canvas>
+            <span class="video-label video-label-with-fps">
+              <span style="clip-path: xywh(0px 0px 423px 100%);">AbyssSplat</span>
+              <span style="clip-path: inset(0px 0px 0px calc(100% - 423px));">removed medium</span>
+            </span>
+          </div>
+          <figcaption style="margin-top: 0.5em;">
+            <strong>Eiffel Tower — </strong>Vertical
+          </figcaption>
+        </figure>
+
+        <figure style="margin: 0;">
+          <div class="video-wrapper">
+            <video class="video-compare" style="aspect-ratio: 1280 / 720; position: absolute;" loop="" muted="" height="0">
+              <source src="./assets/curasao_place.webm" type="video/webm">
+              <source src="./assets/curasao_place.mp4" type="video/mp4">
+            </video>
+            <canvas width="720" height="406" class="video-compare" style="aspect-ratio: 720 / 406;"></canvas>
+            <span class="video-label video-label-with-fps">
+              <span style="clip-path: xywh(0px 0px 423px 100%);">AbyssSplat</span>
+              <span style="clip-path: inset(0px 0px 0px calc(100% - 423px));">removed medium</span>
+            </span>
+          </div>
+          <figcaption style="margin-top: 0.5em;">
+            <strong>SeaThru-NeRF — </strong>Curasao
+          </figcaption>
+        </figure>
+
+        <figure style="margin: 0;">
+          <div class="video-wrapper">
+            <video class="video-compare" style="aspect-ratio: 1280 / 720; position: absolute;" loop="" muted="" height="0">
+              <source src="./assets/panama.webm" type="video/webm">
+              <source src="./assets/panama_place.mp4" type="video/mp4">
+            </video>
+            <canvas width="720" height="406" class="video-compare" style="aspect-ratio: 720 / 406;"></canvas>
+            <span class="video-label video-label-with-fps">
+              <span style="clip-path: xywh(0px 0px 423px 100%);">AbyssSplat </span>
+              <span style="clip-path: inset(0px 0px 0px calc(100% - 423px));">removed medium</span>
+            </span>
+          </div>
+          <figcaption style="margin-top: 0.5em;">
+            <strong>SeaThru-NeRF — </strong>Japanese Gardens
+          </figcaption>
+        </figure>
+        
+      </div>
+    </section>
+
+    <section>
+      <h2>Quantitative Results</h2>
+      <figure style="margin: 0">
+        <picture>
+          <img src="./assets/table.png" alt="Quantitative comparison" style="width: 100%; margin: 0.5em auto 0.3em auto; display: block;">
+        </picture>
+        <figcaption style="text-align: justify">
+          Quantitative comparison on the Eiffel Tower deep-sea dataset and SeaThru-NeRF shallow-water dataset.
+          AbyssSplat achieves state-of-the-art performance across all scenes while requiring fewer Gaussian primitives and less training time.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>Acknowledgements</h2>
+      <p class="justify">
+        The renderer is built on <a href="https://github.com/nerfstudio-project/nerfstudio/">Splatfacto</a> and <a href="https://github.com/AkerBP/seathru_nerf">SeaThru-NeRF (nerfstudio reimplementation)</a>.
+      </p>
+    </section>
+
+    <script src="./scripts.js"></script>
+
+</body></html>
