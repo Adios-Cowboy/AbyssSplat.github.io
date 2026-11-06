@@ -110,6 +110,11 @@ figure {
   text-align: center;
 }
 
+.venue {
+  margin: 0.4em 0 0;
+  text-align: center;
+}
+
 .links {
   margin-top: 0.75em;
   margin-bottom: 1.75em;
@@ -369,4 +374,4 @@ section {
     font-size: 12px;
   }
 }
-  
+
